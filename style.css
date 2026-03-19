@@ -263,7 +263,6 @@ section {
   padding: 2.5rem;
   max-width: 860px;
   position: relative;
-  overflow: hidden;
   transition: border-color 0.25s;
 }
 .project-card::before {
@@ -272,6 +271,7 @@ section {
   background: linear-gradient(135deg, rgba(255,255,255,0.015), transparent);
   opacity: 0; transition: opacity 0.25s;
   pointer-events: none;
+  z-index: 0;
 }
 .project-card:hover { border-color: rgba(255,255,255,0.2); }
 .project-card:hover::before { opacity: 1; }
@@ -282,6 +282,8 @@ section {
   gap: 2rem;
   margin-bottom: 1.25rem;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 3;
 }
 .project-tag {
   font-family: 'DM Mono', monospace;
@@ -291,6 +293,8 @@ section {
   text-transform: uppercase;
   margin-bottom: 0.75rem;
   display: flex; align-items: center; gap: 0.5rem;
+  position: relative;
+  z-index: 3;
 }
 .project-tag::before {
   content: ''; display: inline-block;
@@ -302,13 +306,15 @@ section {
   color: #fff;
   margin-bottom: 0.5rem;
   line-height: 1.35;
+  position: relative;
+  z-index: 3;
 }
 .project-links {
   display: flex;
   gap: 0.75rem;
   flex-shrink: 0;
   position: relative;
-  z-index: 2;
+  z-index: 10;
 }
 .project-link {
   font-family: 'DM Mono', monospace;
@@ -316,7 +322,7 @@ section {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 0.6rem 1.1rem;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.25);
   text-decoration: none;
   color: #ccc;
   transition: all 0.2s;
@@ -325,21 +331,26 @@ section {
   gap: 0.35rem;
   white-space: nowrap;
   position: relative;
-  z-index: 2;
+  z-index: 10;
   cursor: pointer;
+  background: rgba(255,255,255,0.03);
 }
-.project-link:hover { border-color: rgba(255,255,255,0.6); color: #fff; background: rgba(255,255,255,0.05); }
+.project-link:hover { border-color: rgba(255,255,255,0.7); color: #fff; background: rgba(255,255,255,0.08); }
 .project-link::after { content: '↗'; }
 .project-desc {
   font-size: 1rem;
   color: var(--muted);
   line-height: 1.85;
   margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 3;
 }
 .project-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  position: relative;
+  z-index: 3;
 }
 .ptag {
   font-family: 'DM Mono', monospace;
@@ -505,8 +516,9 @@ footer {
 .reveal {
   opacity: 0; transform: translateY(24px);
   transition: opacity 0.7s ease, transform 0.7s ease;
+  pointer-events: none;
 }
-.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
 /* ── RESPONSIVE — all devices ── */
 

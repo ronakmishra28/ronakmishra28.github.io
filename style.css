@@ -271,6 +271,7 @@ section {
   position: absolute; inset: 0;
   background: linear-gradient(135deg, rgba(255,255,255,0.015), transparent);
   opacity: 0; transition: opacity 0.25s;
+  pointer-events: none;
 }
 .project-card:hover { border-color: rgba(255,255,255,0.2); }
 .project-card:hover::before { opacity: 1; }
@@ -306,23 +307,28 @@ section {
   display: flex;
   gap: 0.75rem;
   flex-shrink: 0;
+  position: relative;
+  z-index: 2;
 }
 .project-link {
   font-family: 'DM Mono', monospace;
   font-size: 0.65rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--border2);
+  padding: 0.6rem 1.1rem;
+  border: 1px solid rgba(255,255,255,0.2);
   text-decoration: none;
-  color: var(--muted);
+  color: #ccc;
   transition: all 0.2s;
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
   white-space: nowrap;
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
 }
-.project-link:hover { border-color: rgba(255,255,255,0.35); color: #fff; }
+.project-link:hover { border-color: rgba(255,255,255,0.6); color: #fff; background: rgba(255,255,255,0.05); }
 .project-link::after { content: '↗'; }
 .project-desc {
   font-size: 1rem;
@@ -502,42 +508,119 @@ footer {
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
-/* RESPONSIVE */
+/* ── RESPONSIVE — all devices ── */
+
+/* Large desktops 1280px+ — already handled by base styles */
+
+/* Standard laptops & small desktops: 1025px – 1279px */
+@media (max-width: 1279px) {
+  section { padding: 9rem 4rem 7rem; }
+  .hero-inner { gap: 3.5rem; }
+  .blogs-grid { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+/* iPad Pro landscape / small laptop: 1024px */
 @media (max-width: 1024px) {
   nav { padding: 1.2rem 2.5rem; }
   section { padding: 8rem 3rem 6rem; }
+  .hero-inner { gap: 3rem; }
   .blogs-grid { grid-template-columns: 1fr 1fr; }
+  .hero-name { font-size: clamp(2.2rem, 4vw, 3.5rem); }
 }
+
+/* iPad Pro portrait / iPad Air landscape: 834px – 1024px */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .hero-card { display: block; }
+  .card-body { font-size: 0.78rem; line-height: 1.9; }
+  .blogs-grid { grid-template-columns: 1fr 1fr; }
+  .project-top { flex-direction: column; gap: 1rem; }
+  .project-card { max-width: 100%; }
+}
+
+/* iPad Mini / iPad Air portrait: 768px – 833px */
+@media (max-width: 834px) {
+  nav { padding: 1.1rem 2rem; }
+  .nav-links { gap: 1.8rem; }
+  section { padding: 7.5rem 2rem 5.5rem; }
+  .hero-name { font-size: clamp(2rem, 5vw, 3rem); }
+  .hero-card { display: block; }
+  .card-body { padding: 1.1rem; font-size: 0.76rem; }
+  .section-title { font-size: clamp(1.6rem, 4vw, 2.4rem); white-space: normal; }
+  .about-body { max-width: 100%; }
+  footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2rem 2rem; }
+  .footer-socials { justify-content: center; }
+}
+
+/* Standard tablets & large phones landscape: 600px – 767px */
 @media (max-width: 768px) {
   nav { padding: 1.1rem 1.5rem; }
   .nav-links { gap: 1.5rem; }
   .nav-links a { font-size: 0.65rem; }
   section { padding: 7rem 1.5rem 5rem; }
-  .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-  .hero-card { display: none; }
+  .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .hero-card { display: block; }
+  .card-body { padding: 1rem; font-size: 0.73rem; line-height: 1.85; }
   .section-title { font-size: clamp(1.5rem, 5vw, 2rem); white-space: normal; }
-  .resume-actions { flex-direction: column; }
+  .resume-actions { flex-direction: column; align-items: flex-start; }
   .blogs-grid { grid-template-columns: 1fr; }
   .project-top { flex-direction: column; gap: 1rem; }
+  .project-links { flex-wrap: wrap; }
   footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2rem 1.5rem; }
   .footer-socials { justify-content: center; }
 }
+
+/* Large phones landscape / small tablets: 480px – 599px */
+@media (max-width: 600px) {
+  .hero-name { font-size: clamp(2rem, 7vw, 2.8rem); }
+  .hero-role-line { font-size: 0.85rem; }
+  .card-body { font-size: 0.7rem; }
+  .blogs-grid { grid-template-columns: 1fr; }
+  .project-desc { font-size: 0.95rem; }
+}
+
+/* iPhone 14 Pro / standard phones: up to 430px */
 @media (max-width: 480px) {
   nav { padding: 1rem 1.2rem; }
   .nav-links { gap: 1rem; }
-  .nav-links a { font-size: 0.6rem; letter-spacing: 0.05em; }
+  .nav-links a { font-size: 0.6rem; letter-spacing: 0.04em; }
   section { padding: 6rem 1.2rem 4rem; }
-  .hero-name { font-size: clamp(1.9rem, 9vw, 2.6rem); }
-  .hero-greeting { font-size: 0.82rem; }
-  .hero-role-line { font-size: 0.82rem; }
-  .about-body p { font-size: 1rem; }
-  .btn { padding: 0.75rem 1.4rem; font-size: 0.68rem; }
-  a.blog-card { padding: 1.5rem; }
+  #home { min-height: auto; padding-bottom: 4rem; }
+  .hero-name { font-size: clamp(1.9rem, 9vw, 2.5rem); }
+  .hero-greeting { font-size: 0.8rem; }
+  .hero-role-wrap { margin-bottom: 1.5rem; }
+  .hero-role-line { font-size: 0.8rem; }
+  .hero-card { display: block; }
+  .card-body { padding: 0.9rem; font-size: 0.68rem; line-height: 1.8; }
+  .card-title { font-size: 0.62rem; }
+  .dot { width: 8px; height: 8px; }
+  .about-body p { font-size: 0.98rem; }
+  .btn { padding: 0.75rem 1.4rem; font-size: 0.68rem; width: 100%; text-align: center; }
+  .resume-actions { width: 100%; }
+  a.blog-card { padding: 1.4rem; }
   .blog-title { font-size: 0.95rem; }
-  .project-card { padding: 1.5rem; }
-  .project-title { font-size: 1.1rem; }
+  .blog-excerpt { font-size: 0.88rem; }
+  .project-card { padding: 1.4rem; }
+  .project-title { font-size: 1.05rem; }
+  .project-desc { font-size: 0.92rem; }
+  .project-link { font-size: 0.6rem; padding: 0.5rem 0.9rem; }
   footer { padding: 1.75rem 1.2rem; }
   .footer-copy { font-size: 0.75rem; }
+  .footer-socials svg { width: 20px; height: 20px; }
   .scroll-hint { display: none; }
-  .section-header { margin-bottom: 2.5rem; }
+  .section-header { margin-bottom: 2rem; }
+  .tcursor { width: 6px; height: 11px; }
+}
+
+/* iPhone SE / very small phones: up to 375px */
+@media (max-width: 375px) {
+  nav { padding: 0.9rem 1rem; }
+  .nav-links { gap: 0.7rem; }
+  .nav-links a { font-size: 0.55rem; }
+  section { padding: 5.5rem 1rem 3.5rem; }
+  .hero-name { font-size: clamp(1.7rem, 10vw, 2.2rem); }
+  .hero-greeting { font-size: 0.75rem; }
+  .card-body { font-size: 0.63rem; padding: 0.75rem; }
+  .section-title { font-size: 1.4rem; }
+  .about-body p { font-size: 0.93rem; }
 }

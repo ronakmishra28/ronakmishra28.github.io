@@ -13,15 +13,6 @@ Contact for permission if needed.
 <title>Ronak Mishra — Portfolio</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-JXHHJH0PPG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-JXHHJH0PPG');
-</script>
 </head>
 <body>
 
@@ -136,6 +127,39 @@ Contact for permission if needed.
       </div>
     </div>
     </div>
+
+    <div class="reveal" style="margin-top: 1.5rem;">
+    <div class="project-card">
+      <div class="project-tag">Home Lab · Firewall · Network Defense</div>
+      <div class="project-top">
+        <div>
+          <div class="project-title">pfSense Firewall Home Lab — SYN Flood Attack Simulation &amp; Blocking</div>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/ronakmishra28/pfSense-Firewall-Home-Lab/blob/main/pfSense-Firewall-Home-Lab-Project.pdf" target="_blank" rel="noopener noreferrer" class="project-link">Read Full Report</a>
+          <a href="https://github.com/ronakmishra28/pfSense-Firewall-Home-Lab" target="_blank" rel="noopener noreferrer" class="project-link">GitHub</a>
+        </div>
+      </div>
+      <p class="project-desc">
+        Built a fully isolated dual-network firewall environment from scratch using <strong>pfSense 2.8.1</strong> on VirtualBox — with a <strong>Kali Linux attacker VM</strong> on the WAN side and an <strong>Ubuntu management VM</strong> on the LAN side. Configured pfSense entirely via console, set up WAN/LAN interfaces, enabled DHCP, and established connectivity across both networks.
+        <br><br>
+        Launched a real <strong>SYN flood attack using hping3</strong> (~30,000 packets/sec) and captured the traffic live in <strong>Wireshark</strong> to confirm the attack was overwhelming the firewall. Then created <strong>custom WAN firewall rules</strong> to block the attacker IP and SYN flood packets — re-ran the same attack and verified full blocking via <strong>pfSense firewall logs</strong> showing dropped traffic, with the web interface remaining fully responsive throughout. Directly mirrors perimeter defense, DoS mitigation, and log analysis workflows used in SOC environments.
+      </p>
+      <div class="project-tags">
+        <span class="ptag">pfSense</span>
+        <span class="ptag">VirtualBox</span>
+        <span class="ptag">Kali Linux</span>
+        <span class="ptag">Ubuntu</span>
+        <span class="ptag">hping3</span>
+        <span class="ptag">SYN Flood</span>
+        <span class="ptag">Wireshark</span>
+        <span class="ptag">Firewall Rules</span>
+        <span class="ptag">DoS Mitigation</span>
+        <span class="ptag">Network Defense</span>
+      </div>
+    </div>
+    </div>
+
   </div>
 </section>
 
@@ -150,7 +174,7 @@ Contact for permission if needed.
       <p>Want to know more about my experience, education, and certifications? <strong>Download my full resume</strong> — everything is in there.</p>
       <div class="resume-actions">
         <a href="Ronak_Mishra_Resume.pdf" download class="btn btn-primary">Download Resume</a>
-        <a href="mailto:ronakmishra1077@gmail.com" class="btn btn-outline">Get in Touch</a>
+        <a href="/cdn-cgi/l/email-protection#42302d2c23292f2b312a30237372757502252f232b2e6c212d2f" class="btn btn-outline">Get in Touch</a>
       </div>
     </div>
   </div>
@@ -209,10 +233,10 @@ Contact for permission if needed.
 <footer>
   <div class="footer-copy">© 2026 Developed by <span>Ronak Mishra</span></div>
   <div class="footer-socials">
-    <a href="mailto:ronakmishra1077@gmail.com" title="Email">
+    <a href="/cdn-cgi/l/email-protection#1f6d70717e7472766c776d7e2e2f28285f78727e7673317c7072" title="Email">
       <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
     </a>
-    <a href="https://www.linkedin.com/in/ronakmishra/" target="_blank" title="LinkedIn">
+    <a href="https://www.linkedin.com/in/ronak-mishra-b71a48268/" target="_blank" title="LinkedIn">
       <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
     </a>
     <a href="https://github.com/ronakmishra28" target="_blank" title="GitHub">
@@ -221,7 +245,7 @@ Contact for permission if needed.
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // STARS
 (function() {
   const canvas = document.getElementById('stars-canvas');
@@ -300,12 +324,4 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     if (i < chars.length) {
       el.textContent += chars[i++];
       setTimeout(type, 70);
-    } else {
-      blinkInterval = setInterval(blink, 530);
-      setTimeout(() => { clearInterval(blinkInterval); el.style.borderColor = 'transparent'; }, 2500);
-    }
-  }, 600);
-})();
-</script>
-</body>
-</html>
+    } el

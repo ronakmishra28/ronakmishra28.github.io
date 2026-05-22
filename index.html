@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ronak Mishra - Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0a;--surface:#111111;--border:#222222;--border2:#2e2e2e;--text:#e8e8e8;--muted:#888888;--muted2:#555555}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;font-size:16px;line-height:1.6}
+#stars-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+.scroll-progress{position:fixed;top:0;left:0;height:2px;background:rgba(255,255,255,0.5);z-index:9999;width:0%;transition:width 0.1s linear}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:flex-end;padding:1.4rem 4rem;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(10,10,10,0.92);backdrop-filter:blur(20px);border-color:var(--border)}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:#fff;transition:width .3s}
+.nav-links a:hover{color:#fff}
+.nav-links a:hover::after{width:100%}
+section{position:relative;z-index:1;padding:9rem 5rem 7rem}
+#home{min-height:100vh;display:flex;align-items:center}
+.hero-inner{max-width:1160px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.1fr .9fr;gap:5rem;align-items:center}
+.hero-greeting{font-family:'DM Mono',monospace;font-size:.9rem;color:var(--muted);letter-spacing:.1em;margin-bottom:1.5rem;min-height:1.4rem;opacity:0;animation:fadeUp .5s ease forwards .1s}
+.tw-text{display:inline-block;white-space:nowrap;border-right:2px solid transparent}
+.hero-name{font-size:clamp(2.4rem,4.5vw,4rem);font-weight:700;line-height:1.08;letter-spacing:-.03em;margin-bottom:1.2rem;color:#fff;opacity:0;animation:fadeUp .6s ease forwards .45s}
+.hero-role-wrap{height:1.8rem;overflow:hidden;margin-bottom:2rem;opacity:0;animation:fadeUp .6s ease forwards .6s}
+.hero-role-inner{display:flex;flex-direction:column;animation:roleScroll 12s cubic-bezier(0.4,0,0.2,1) infinite}
+.hero-role-line{font-family:'DM Mono',monospace;font-size:.92rem;color:var(--muted);height:1.8rem;display:flex;align-items:center;flex-shrink:0;letter-spacing:.04em}
+.hero-role-line span{color:rgba(255,255,255,.8)}
+@keyframes roleScroll{0%,30%{transform:translateY(0)}35%,63%{transform:translateY(-1.8rem)}68%,96%{transform:translateY(-3.6rem)}100%{transform:translateY(0)}}
+.hero-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;opacity:0;animation:fadeIn .8s ease forwards 1s}
+.card-bar{background:#161616;padding:.65rem 1.1rem;display:flex;align-items:center;gap:.45rem;border-bottom:1px solid var(--border)}
+.dot{width:10px;height:10px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.card-title{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted2);margin:0 auto}
+.card-body{padding:1.4rem;font-family:'DM Mono',monospace;font-size:.78rem;line-height:2}
+.t-line{opacity:0}
+.t-line:nth-child(1){animation:lineIn 0s forwards 1.1s}
+.t-line:nth-child(2){animation:lineIn 0s forwards 1.5s}
+.t-line:nth-child(3){animation:lineIn 0s forwards 1.9s}
+.t-line:nth-child(4){animation:lineIn 0s forwards 2.3s}
+.t-line:nth-child(5){animation:lineIn 0s forwards 2.7s}
+.t-line:nth-child(6){animation:lineIn 0s forwards 3.1s}
+.t-line:nth-child(7){animation:lineIn 0s forwards 3.5s}
+.t-line:nth-child(8){animation:lineIn 0s forwards 3.9s}
+.t-line:nth-child(9){animation:lineIn 0s forwards 4.3s}
+@keyframes lineIn{to{opacity:1}}
+.tp{color:rgba(255,255,255,.85)}.tc{color:var(--muted)}.to{color:var(--muted2)}.tok{color:#7dd3a8}.talert{color:#f87171}.tinfo{color:#93b4ff}
+.tcursor{display:inline-block;width:7px;height:13px;background:rgba(255,255,255,.8);animation:cBlink 1s step-end infinite;vertical-align:middle}
+@keyframes cBlink{0%,100%{opacity:.8}50%{opacity:0}}
+.scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:fadeIn 1s ease forwards 2.5s}
+.scroll-hint span{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted2);letter-spacing:.25em;text-transform:uppercase}
+.scroll-line{width:1px;height:44px;background:linear-gradient(to bottom,rgba(255,255,255,.3),transparent);animation:sPulse 2s ease infinite}
+@keyframes sPulse{0%,100%{opacity:.2}50%{opacity:.8}}
+.section-inner{max-width:1000px;margin:0 auto}
+.section-header{display:flex;align-items:center;gap:1.5rem;margin-bottom:4rem}
+.section-title{font-size:clamp(1.8rem,3vw,2.6rem);font-weight:700;letter-spacing:-.025em;color:#fff;white-space:nowrap}
+.section-line{flex:1;height:1px;background:var(--border)}
+#about{border-top:1px solid var(--border);background:rgba(10,10,10,0.55);min-height:auto}
+.about-body{max-width:720px}
+.about-body p{font-size:1.05rem;color:var(--muted);line-height:1.9;margin-bottom:1.4rem}
+.about-body p:last-child{margin-bottom:0}
+.about-body strong{color:var(--text);font-weight:600}
+.skill-badges{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.75rem}
+.skill-badge{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.06em;padding:.4rem .9rem;border:1px solid var(--border2);color:var(--muted);border-radius:2px;transition:all .25s;opacity:0;transform:translateY(10px)}
+.skill-badge.badge-visible{opacity:1;transform:translateY(0)}
+.skill-badge:hover{border-color:#fff;color:#fff;background:rgba(255,255,255,.05)}
+#projects{border-top:1px solid var(--border);background:rgba(10,10,10,0.55);min-height:auto}
+.project-status{display:flex;align-items:center;gap:.5rem;font-family:'DM Mono',monospace;font-size:.62rem;color:#4ade80;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem}
+.status-dot{width:7px;height:7px;background:#4ade80;border-radius:50%;position:relative}
+.status-dot::after{content:'';position:absolute;inset:-3px;border-radius:50%;background:#4ade80;opacity:.3;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.3}50%{transform:scale(1.8);opacity:0}}
+.project-card{border:1px solid var(--border);padding:2.5rem;max-width:860px;position:relative;transition:border-color .25s;margin-bottom:1.5rem;background:rgba(10,10,10,0.5);backdrop-filter:blur(4px)}
+.project-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.015),transparent);opacity:0;transition:opacity .25s;pointer-events:none;z-index:0}
+.project-card:hover{border-color:rgba(255,255,255,.2)}
+.project-card:hover::before{opacity:1}
+.project-top{display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;margin-bottom:1.25rem;flex-wrap:wrap;position:relative;z-index:3}
+.project-tag{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted2);letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem;position:relative;z-index:3}
+.project-tag::before{content:'';display:inline-block;width:18px;height:1px;background:var(--muted2)}
+.project-title{font-size:1.25rem;font-weight:700;color:#fff;margin-bottom:.5rem;line-height:1.35;position:relative;z-index:3}
+.project-links{display:flex;gap:.75rem;flex-shrink:0;position:relative;z-index:10}
+.project-link{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;padding:.6rem 1.1rem;border:1px solid rgba(255,255,255,.25);text-decoration:none;color:#ccc;transition:all .2s;display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap;position:relative;z-index:10;cursor:pointer;background:rgba(255,255,255,.03)}
+.project-link:hover{border-color:rgba(255,255,255,.7);color:#fff;background:rgba(255,255,255,.08)}
+.project-link::after{content:'\2197'}
+.project-desc{font-size:1rem;color:var(--muted);line-height:1.85;margin-bottom:1.5rem;position:relative;z-index:3}
+.project-tags{display:flex;flex-wrap:wrap;gap:.5rem;position:relative;z-index:3}
+.ptag{font-family:'DM Mono',monospace;font-size:.65rem;padding:.3rem .8rem;border:1px solid var(--border);color:var(--muted2);letter-spacing:.05em}
+#certs{border-top:1px solid var(--border);background:rgba(10,10,10,0.55);min-height:auto}
+.certs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.cert-card{border:1px solid var(--border);padding:1.5rem;transition:border-color .25s,transform .25s;position:relative;overflow:hidden}
+.cert-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.02),transparent);opacity:0;transition:opacity .25s;pointer-events:none}
+.cert-card:hover{border-color:rgba(255,255,255,.25);transform:translateY(-3px)}
+.cert-card:hover::before{opacity:1}
+.cert-issuer{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted2);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem}
+.cert-issuer::before{content:'';display:inline-block;width:14px;height:1px;background:var(--muted2)}
+.cert-name{font-size:1rem;font-weight:600;color:#fff;margin-bottom:.35rem;line-height:1.3}
+.cert-year{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted)}
+#resume{border-top:1px solid var(--border);background:rgba(10,10,10,0.55);min-height:auto}
+.resume-clean{display:flex;flex-direction:column;align-items:flex-start;gap:2rem;padding:2rem 0 1rem}
+.resume-clean p{font-size:1.05rem;color:var(--muted);max-width:480px;line-height:1.85}
+.resume-clean strong{color:var(--text)}
+.resume-actions{display:flex;gap:1rem;flex-wrap:wrap}
+.btn{font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;padding:.85rem 1.9rem;border:1px solid;text-decoration:none;transition:all .25s;display:inline-block;cursor:pointer}
+.btn-primary{background:#fff;color:#000;border-color:#fff}
+.btn-primary:hover{background:transparent;color:#fff}
+.btn-outline{background:transparent;color:var(--muted);border-color:var(--border2)}
+.btn-outline:hover{border-color:#fff;color:#fff}
+#blogs{border-top:1px solid var(--border);background:rgba(10,10,10,0.55);min-height:auto}
+.blogs-top{display:flex;justify-content:flex-end;margin-bottom:2.5rem}
+.medium-link{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--muted);text-decoration:none;letter-spacing:.08em;border:1px solid var(--border2);padding:.5rem 1.1rem;transition:all .2s;display:inline-flex;align-items:center;gap:.4rem}
+.medium-link:hover{border-color:rgba(255,255,255,.4);color:#fff}
+.medium-link::after{content:'\2197'}
+.blogs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+a.blog-card{display:block;border:1px solid var(--border);padding:2rem;text-decoration:none;color:inherit;transition:border-color .25s,transform .25s;position:relative;overflow:hidden;background:rgba(10,10,10,0.55)}
+a.blog-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.02),transparent);opacity:0;transition:opacity .25s}
+a.blog-card:hover{border-color:rgba(255,255,255,.22);transform:translateY(-3px)}
+a.blog-card:hover::before{opacity:1}
+.blog-tag{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted2);letter-spacing:.18em;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.blog-tag::before{content:'';display:inline-block;width:18px;height:1px;background:var(--muted2)}
+.blog-title{font-size:1rem;font-weight:600;line-height:1.45;margin-bottom:.85rem;color:#fff;transition:color .2s}
+a.blog-card:hover .blog-title{color:rgba(255,255,255,.7)}
+.blog-excerpt{font-size:.9rem;color:var(--muted);line-height:1.8;margin-bottom:1.5rem}
+.blog-meta{display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:1px solid var(--border)}
+.blog-date{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--muted2)}
+.blog-read{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--muted);display:flex;align-items:center;gap:.35rem;transition:color .2s}
+.blog-read::after{content:'->'}
+a.blog-card:hover .blog-read{color:#fff}
+#contact{border-top:1px solid var(--border);background:rgba(10,10,10,0.55);min-height:auto}
+.contact-row{display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
+.contact-chip{font-family:'DM Mono',monospace;font-size:.75rem;letter-spacing:.06em;padding:.65rem 1.4rem;border:1px solid var(--border2);text-decoration:none;color:var(--muted);transition:all .2s;display:inline-flex;align-items:center;gap:.5rem}
+.contact-chip:hover{border-color:rgba(255,255,255,.4);color:#fff;background:rgba(255,255,255,.04)}
+.contact-chip-label{color:var(--muted2);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;margin-right:.25rem}
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2.8rem 4rem;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,10,.97)}
+.footer-copy{font-family:'DM Mono',monospace;font-size:.82rem;color:#777}
+.footer-copy span{color:#aaa}
+.footer-socials{display:flex;gap:1.8rem;align-items:center}
+.footer-socials a{color:#555;text-decoration:none;transition:color .2s;display:flex;align-items:center}
+.footer-socials a:hover{color:#fff}
+.footer-socials svg{width:22px;height:22px;fill:currentColor}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:1024px){nav{padding:1.2rem 2.5rem}section{padding:8rem 3rem 6rem}.blogs-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr;gap:2.5rem}.hero-card{display:block}.blogs-grid{grid-template-columns:1fr 1fr}.project-top{flex-direction:column;gap:1rem}.certs-grid{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:768px){nav{padding:1.1rem 1.5rem}.nav-links{gap:1.5rem}.nav-links a{font-size:.65rem}section{padding:7rem 1.5rem 5rem}.section-title{font-size:clamp(1.5rem,5vw,2rem);white-space:normal}.resume-actions{flex-direction:column;align-items:flex-start}.blogs-grid{grid-template-columns:1fr}.certs-grid{grid-template-columns:1fr 1fr}footer{flex-direction:column;gap:1.5rem;text-align:center;padding:2rem 1.5rem}.footer-socials{justify-content:center}}
+@media(max-width:480px){nav{padding:1rem 1.2rem}.nav-links{gap:1rem}.nav-links a{font-size:.6rem}section{padding:6rem 1.2rem 4rem}#home{min-height:auto;padding-bottom:4rem}.hero-name{font-size:clamp(1.9rem,9vw,2.5rem)}.hero-greeting{font-size:.8rem}.hero-role-line{font-size:.8rem}.card-body{padding:.9rem;font-size:.68rem;line-height:1.8}.about-body p{font-size:.98rem}.btn{padding:.75rem 1.4rem;font-size:.68rem;width:100%;text-align:center}.resume-actions{width:100%}a.blog-card{padding:1.4rem}.blog-title{font-size:.95rem}.project-card{padding:1.4rem}.project-title{font-size:1.05rem}.certs-grid{grid-template-columns:1fr}footer{padding:1.75rem 1.2rem}.footer-copy{font-size:.75rem}.scroll-hint{display:none}.section-header{margin-bottom:2rem}}
+@media(max-width:375px){nav{padding:.9rem 1rem}.nav-links{gap:.7rem}.nav-links a{font-size:.55rem}section{padding:5.5rem 1rem 3.5rem}.hero-name{font-size:clamp(1.7rem,10vw,2.2rem)}.hero-greeting{font-size:.75rem}.card-body{font-size:.63rem;padding:.75rem}.section-title{font-size:1.4rem}.about-body p{font-size:.93rem}}
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<canvas id="stars-canvas"></canvas>
+<nav id="navbar">
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#certs">Certs</a></li>
+    <li><a href="#resume">Resume</a></li>
+    <li><a href="#blogs">Blogs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="home">
+  <div class="hero-inner">
+    <div>
+      <p class="hero-greeting"><span class="tw-text"></span></p>
+      <h1 class="hero-name">Ronak Mishra</h1>
+      <div class="hero-role-wrap">
+        <div class="hero-role-inner">
+          <div class="hero-role-line"><span>SOC Analyst</span></div>
+          <div class="hero-role-line"><span>Cybersecurity Analyst</span></div>
+          <div class="hero-role-line"><span>Detection Engineer</span></div>
+          <div class="hero-role-line"><span>SOC Analyst</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="card-bar">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <span class="card-title">soc-monitor.sh</span>
+      </div>
+      <div class="card-body">
+        <div class="t-line"><span class="tp">ronak@soc</span><span class="tc"> ~ ./monitor --live</span></div>
+        <div class="t-line"><span class="tinfo">[*] Connecting to SIEM...</span></div>
+        <div class="t-line"><span class="tok">[+] Splunk cluster online</span></div>
+        <div class="t-line"><span class="to">[*] Scanning 3,214 events/sec</span></div>
+        <div class="t-line"><span class="talert">[!] ALERT: Brute-force 194.67.x.x</span></div>
+        <div class="t-line"><span class="to">[*] Correlating with threat intel...</span></div>
+        <div class="t-line"><span class="talert">[!] Match: Known C2 infrastructure</span></div>
+        <div class="t-line"><span class="tok">[+] Host isolated SOC-2841 P1</span></div>
+        <div class="t-line"><span class="tp">ronak@soc</span> <span class="tcursor"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<section id="about">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <h2 class="section-title">Let Me Introduce Myself</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-body reveal">
+      <p>I fell in love with cybersecurity and I have mastered a solid chunk of it, no question... &#129335;</p>
+      <p>I am proficient in performing tasks like <strong>log analysis, threat detection and triage, incident handling, network packet dissection, endpoint/user troubleshooting, defensive monitoring,</strong> and <strong>basic containment workflows.</strong></p>
+      <p>My fields of interest are <strong>defensive security operations, SIEM tuning and alerting, network visibility and anomaly detection, endpoint protection,</strong> and <strong>hardening modern infrastructure</strong> (cloud basics, virtualization, identity controls).</p>
+      <p>Whenever possible, I also skill up in platforms like <strong>TryHackMe, Hack The Box,</strong> and <strong>personal Splunk labs</strong> - ingesting real logs, crafting detection searches, building custom dashboards, simulating full incident lifecycles, and running blue-team containment and recovery scenarios.</p>
+      <div class="skill-badges" id="skillBadges">
+        <span class="skill-badge">Microsoft Sentinel</span>
+        <span class="skill-badge">Wazuh</span>
+        <span class="skill-badge">Splunk</span>
+        <span class="skill-badge">KQL</span>
+        <span class="skill-badge">Wireshark</span>
+        <span class="skill-badge">MITRE ATT&amp;CK</span>
+        <span class="skill-badge">Azure Arc</span>
+        <span class="skill-badge">Windows Event Logs</span>
+        <span class="skill-badge">Linux Syslog</span>
+        <span class="skill-badge">Incident Response</span>
+        <span class="skill-badge">SOAR</span>
+        <span class="skill-badge">Detection Engineering</span>
+        <span class="skill-badge">Threat Hunting</span>
+        <span class="skill-badge">Active Directory</span>
+        <span class="skill-badge">TCP/IP</span>
+        <span class="skill-badge">pfSense</span>
+        <span class="skill-badge">Kali Linux</span>
+        <span class="skill-badge">VMware</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <h2 class="section-title">Projects</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="reveal">
+      <div class="project-card">
+        <div class="project-status"><span class="status-dot"></span>Active Lab</div>
+        <div class="project-tag">Home Lab - Microsoft Sentinel - Detection Engineering - SOAR</div>
+        <div class="project-top">
+          <div><div class="project-title">Microsoft Sentinel Enterprise SIEM Lab - 7-Day SOC Simulation</div></div>
+          <div class="project-links">
+            <a href="https://github.com/ronakmishra28/microsoft-sentinel-enterprise-siem-lab" target="_blank" rel="noopener noreferrer" class="project-link">GitHub</a>
+          </div>
+        </div>
+        <p class="project-desc">Built a full enterprise SOC on Azure - connected <strong>Windows 11</strong> and <strong>Ubuntu 22.04</strong> to <strong>Microsoft Sentinel</strong> via Azure Arc, then used Kali Linux to simulate SSH brute force (260 attempts, 3 waves), RDP brute force, and post-exploitation recon. Wrote <strong>3 custom KQL analytics rules</strong> mapped to MITRE ATT&amp;CK (T1110, T1110.001, T1082) and <strong>4 threat hunting queries</strong> - every rule fired on live attack data. Built a <strong>SOAR playbook</strong> (Azure Logic Apps) for automated response and a SOC dashboard with 6 live KQL visualizations.<br><br>Ran a full incident response following NIST IR framework - containment via UFW, eradication, recovery - and produced formal incident report IR-2026-001. Covers the complete SOC workflow: detection engineering, threat hunting, automated response, and documented IR.</p>
+        <div class="project-tags">
+          <span class="ptag">Microsoft Sentinel</span><span class="ptag">Azure Arc</span><span class="ptag">KQL</span>
+          <span class="ptag">Windows 11</span><span class="ptag">Ubuntu 22.04</span><span class="ptag">Kali Linux</span>
+          <span class="ptag">MITRE ATT&amp;CK</span><span class="ptag">SOAR</span><span class="ptag">Logic Apps</span>
+          <span class="ptag">Incident Response</span><span class="ptag">Threat Hunting</span><span class="ptag">NIST IR</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="project-card">
+        <div class="project-status"><span class="status-dot"></span>Active Lab</div>
+        <div class="project-tag">Home Lab - SIEM - Detection Engineering</div>
+        <div class="project-top">
+          <div><div class="project-title">Wazuh Enterprise SIEM Lab - 6-Day SOC Simulation</div></div>
+          <div class="project-links">
+            <a href="https://github.com/ronakmishra28/wazuh-enterprise-siem-lab" target="_blank" rel="noopener noreferrer" class="project-link">GitHub</a>
+          </div>
+        </div>
+        <p class="project-desc">Deployed a 3-machine Wazuh SIEM lab (Ubuntu manager + Windows 11 + Kali Linux agents) and wrote <strong>5 custom detection rules mapped to MITRE ATT&amp;CK</strong> - covering PowerShell obfuscation (T1059.001), download cradles (T1105), Office macro shell spawning (T1566.001), scheduled task persistence (T1136.001), and brute force correlation (T1110). Simulated every attack from Kali and validated each rule fired with real alert evidence. Integrated <strong>VirusTotal API</strong> for file hash enrichment and configured <strong>Active Response</strong> for automated IP blocking.<br><br>Ran a full incident response exercise - reconstructed a multi-stage attack chain from SIEM alerts, performed agent isolation, eradication, and produced formal incident report IR-2026-001. Directly mirrors what Tier 1/2 SOC analysts do when investigating and containing real threats.</p>
+        <div class="project-tags">
+          <span class="ptag">Wazuh 4.14.4</span><span class="ptag">Ubuntu 22.04</span><span class="ptag">Windows 11</span>
+          <span class="ptag">Kali Linux</span><span class="ptag">MITRE ATT&amp;CK</span><span class="ptag">Detection Engineering</span>
+          <span class="ptag">Custom Rules</span><span class="ptag">Incident Response</span><span class="ptag">VirusTotal API</span>
+          <span class="ptag">Active Response</span><span class="ptag">auditd</span><span class="ptag">PowerShell Logging</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="project-card">
+        <div class="project-status"><span class="status-dot"></span>Active Lab</div>
+        <div class="project-tag">Home Lab - WAF - Web Security</div>
+        <div class="project-top">
+          <div><div class="project-title">SafeLine WAF - Web Attack Detection and Blocking Lab</div></div>
+          <div class="project-links">
+            <a href="SafeLine-WAF-Home-Lab-Project.pdf" target="_blank" rel="noopener noreferrer" class="project-link">Read Full Report</a>
+            <a href="https://github.com/ronakmishra28/waf-dvwa-detection-lab" target="_blank" rel="noopener noreferrer" class="project-link">GitHub</a>
+          </div>
+        </div>
+        <p class="project-desc">Deployed DVWA on Ubuntu and used Kali Linux to execute live <strong>SQL Injection, XSS, and HTTP Flood</strong> attacks - confirmed exploitable without protection. Then placed <strong>SafeLine WAF</strong> (Docker-based reverse proxy) in front of the application, configured rate limiting, IP blocking, and injection detection rules, and re-ran every attack.<br><br>All attacks blocked. Real-time dashboard logs showed source IP, matched rule, payload, and timestamp for each blocked request - the same alert triage workflow SOC analysts use when investigating suspicious web traffic.</p>
+        <div class="project-tags">
+          <span class="ptag">Ubuntu Server</span><span class="ptag">Kali Linux</span><span class="ptag">DVWA</span>
+          <span class="ptag">SafeLine WAF</span><span class="ptag">Docker</span><span class="ptag">SQL Injection</span>
+          <span class="ptag">XSS</span><span class="ptag">HTTP Flood</span><span class="ptag">Wireshark</span>
+          <span class="ptag">OpenSSL</span><span class="ptag">Parallels</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="project-card">
+        <div class="project-status"><span class="status-dot"></span>Active Lab</div>
+        <div class="project-tag">Home Lab - Firewall - Network Defense</div>
+        <div class="project-top">
+          <div><div class="project-title">pfSense Firewall Home Lab - SYN Flood Attack Simulation and Blocking</div></div>
+          <div class="project-links">
+            <a href="https://github.com/ronakmishra28/pfSense-Firewall-Home-Lab/blob/main/pfSense-Firewall-Home-Lab-Project.pdf" target="_blank" rel="noopener noreferrer" class="project-link">Read Full Report</a>
+            <a href="https://github.com/ronakmishra28/pfSense-Firewall-Home-Lab" target="_blank" rel="noopener noreferrer" class="project-link">GitHub</a>
+          </div>
+        </div>
+        <p class="project-desc">Built a dual-network lab with <strong>pfSense 2.8.1</strong> as the perimeter firewall - Kali Linux on WAN as the attacker, Ubuntu on LAN as the protected host. Launched a <strong>SYN flood via hping3 at ~30,000 packets/sec</strong> and confirmed impact with Wireshark before any rules were in place.<br><br>Created custom WAN firewall rules to block the attacker IP and SYN flood traffic - re-ran the attack and verified full blocking via pfSense firewall logs. Covers perimeter defense, DoS mitigation, and the log review cycle that mirrors real SOC triage.</p>
+        <div class="project-tags">
+          <span class="ptag">pfSense</span><span class="ptag">VirtualBox</span><span class="ptag">Kali Linux</span>
+          <span class="ptag">Ubuntu</span><span class="ptag">hping3</span><span class="ptag">SYN Flood</span>
+          <span class="ptag">Wireshark</span><span class="ptag">Firewall Rules</span><span class="ptag">DoS Mitigation</span>
+          <span class="ptag">Network Defense</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="certs">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <h2 class="section-title">Certifications</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="certs-grid">
+      <div class="cert-card reveal">
+        <div class="cert-issuer">CompTIA</div>
+        <div class="cert-name">Security+</div>
+        <div class="cert-year">Dec 2025</div>
+      </div>
+      <div class="cert-card reveal" style="transition-delay:.1s">
+        <div class="cert-issuer">ISC2</div>
+        <div class="cert-name">Certified in Cybersecurity (CC)</div>
+        <div class="cert-year">Jan 2026</div>
+      </div>
+      <div class="cert-card reveal" style="transition-delay:.2s">
+        <div class="cert-issuer">Microsoft</div>
+        <div class="cert-name">SC-200: Security Operations Analyst</div>
+        <div class="cert-year">May 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="resume">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <h2 class="section-title">Resume</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="resume-clean reveal">
+      <p>Want to know more about my experience, education, and certifications? <strong>Download my full resume</strong> - everything is in there.</p>
+      <div class="resume-actions">
+        <a href="Ronak_Mishra_Resume.pdf" download class="btn btn-primary">Download Resume</a>
+        <a href="mailto:ronakmishra1077@gmail.com" class="btn btn-outline">Get in Touch</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="blogs">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <h2 class="section-title">Blogs</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="blogs-top reveal">
+      <a href="https://medium.com/@ronakonweb" target="_blank" class="medium-link">View all on Medium</a>
+    </div>
+    <div class="blogs-grid">
+      <a href="https://medium.com/@ronakonweb/the-kql-query-that-caught-260-brute-force-attempts-in-microsoft-sentinel-b305b68afb69" target="_blank" class="blog-card reveal">
+        <div class="blog-tag">KQL - Threat Hunting</div>
+        <div class="blog-title">The KQL Query That Caught 260 Brute Force Attempts in Microsoft Sentinel</div>
+        <div class="blog-excerpt">A real KQL query, a real attack, 260 SSH brute force attempts across 3 waves - and exactly how Sentinel caught every single one.</div>
+        <div class="blog-meta"><span class="blog-date">Medium - @ronakonweb</span><span class="blog-read">Read</span></div>
+      </a>
+      <a href="https://medium.com/@ronakonweb/5-windows-event-ids-every-soc-analyst-should-know-with-real-lab-evidence-9bf8d1f88bca" target="_blank" class="blog-card reveal" style="transition-delay:.1s">
+        <div class="blog-tag">SOC Skills</div>
+        <div class="blog-title">5 Windows Event IDs Every SOC Analyst Should Know - With Real Lab Evidence</div>
+        <div class="blog-excerpt">Real Wazuh alerts, actual Event IDs from a live Windows agent, and exactly what each one means when you see it in a SIEM - no theory, all lab evidence.</div>
+        <div class="blog-meta"><span class="blog-date">Medium - @ronakonweb</span><span class="blog-read">Read</span></div>
+      </a>
+      <a href="https://medium.com/@ronakonweb/i-built-a-web-security-lab-and-watched-sql-injection-get-blocked-in-real-time-5f3bc8697dd8" target="_blank" class="blog-card reveal" style="transition-delay:.2s">
+        <div class="blog-tag">Home Lab</div>
+        <div class="blog-title">I Built a Web Security Lab and Watched SQL Injection Get Blocked in Real Time</div>
+        <div class="blog-excerpt">Set up DVWA, ran a live SQL injection, deployed SafeLine WAF, and watched the exact same payload get blocked - logs included.</div>
+        <div class="blog-meta"><span class="blog-date">Medium - @ronakonweb</span><span class="blog-read">Read</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <h2 class="section-title">Contact</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-row reveal">
+      <a href="mailto:ronakmishra1077@gmail.com" class="contact-chip">
+        <span class="contact-chip-label">Email</span>ronakmishra1077@gmail.com
+      </a>
+      <a href="https://www.linkedin.com/in/ronakmishra/" target="_blank" class="contact-chip">
+        <span class="contact-chip-label">LinkedIn</span>ronakmishra
+      </a>
+      <a href="https://github.com/ronakmishra28" target="_blank" class="contact-chip">
+        <span class="contact-chip-label">GitHub</span>ronakmishra28
+      </a>
+      <a href="https://medium.com/@ronakonweb" target="_blank" class="contact-chip">
+        <span class="contact-chip-label">Medium</span>@ronakonweb
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-copy">2026 Developed by <span>Ronak Mishra</span></div>
+  <div class="footer-socials">
+    <a href="mailto:ronakmishra1077@gmail.com" title="Email">
+      <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/ronakmishra/" target="_blank" title="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+    <a href="https://github.com/ronakmishra28" target="_blank" title="GitHub">
+      <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+    </a>
+  </div>
+</footer>
+
+<script>
+(function(){var c=document.getElementById("stars-canvas"),ctx=c.getContext("2d"),W,H,stars=[],sh=[];function rs(){W=c.width=window.innerWidth;H=c.height=window.innerHeight}function is(){stars=[];for(var i=0;i<300;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.15,a:Math.random()*.6+.15,tw:Math.random()*Math.PI*2,ts:Math.random()*.015+.003,vy:Math.random()*.07+.01})}setInterval(function(){sh.push({x:Math.random()*W*.75,y:Math.random()*H*.45,l:80+Math.random()*120,s:6+Math.random()*6,a:1,g:Math.PI/5})},4000);function draw(){ctx.clearRect(0,0,W,H);var g=ctx.createRadialGradient(W*.2,H*.2,0,W*.2,H*.2,W*.4);g.addColorStop(0,"rgba(255,255,255,.016)");g.addColorStop(1,"transparent");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);for(var i=0;i<stars.length;i++){var s=stars[i];s.tw+=s.ts;s.y-=s.vy;if(s.y<-2)s.y=H+2;var a=s.a*(.6+.4*Math.sin(s.tw));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle="rgba(220,228,255,"+a+")";ctx.fill()}sh=sh.filter(function(s){return s.a>0});for(var i=0;i<sh.length;i++){var s=sh[i];ctx.save();ctx.globalAlpha=s.a;var gd=ctx.createLinearGradient(s.x,s.y,s.x-Math.cos(s.g)*s.l,s.y-Math.sin(s.g)*s.l);gd.addColorStop(0,"rgba(240,245,255,.85)");gd.addColorStop(1,"transparent");ctx.strokeStyle=gd;ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(s.x-Math.cos(s.g)*s.l,s.y-Math.sin(s.g)*s.l);ctx.stroke();ctx.restore();s.x+=Math.cos(s.g)*s.s;s.y+=Math.sin(s.g)*s.s;s.a-=.016}requestAnimationFrame(draw)}rs();is();draw();window.addEventListener("resize",function(){rs();is()})})();
+
+var nav=document.getElementById("navbar");
+window.addEventListener("scroll",function(){nav.classList.toggle("scrolled",window.scrollY>40)});
+
+var prog=document.getElementById("scrollProgress");
+window.addEventListener("scroll",function(){var t=window.scrollY,d=document.documentElement.scrollHeight-window.innerHeight;if(prog)prog.style.width=(d>0?(t/d)*100:0)+"%"});
+
+var obs=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting)e.target.classList.add("visible")})},{threshold:.08});
+document.querySelectorAll(".reveal").forEach(function(el){obs.observe(el)});
+
+var badgeObs=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){var b=e.target.querySelectorAll(".skill-badge");b.forEach(function(x,i){setTimeout(function(){x.classList.add("badge-visible")},i*60)})}})},{threshold:.1});
+var sb=document.getElementById("skillBadges");if(sb)badgeObs.observe(sb);
+
+(function(){var el=document.querySelector(".tw-text");if(!el)return;var txt="Hello, World! ";var i=0;el.textContent="";el.style.borderRight="2px solid rgba(255,255,255,.55)";var bi;function blink(){el.style.borderColor=el.style.borderColor==="transparent"?"rgba(255,255,255,.55)":"transparent"}setTimeout(function type(){if(i<txt.length){el.textContent+=txt[i++];setTimeout(type,80)}else{el.textContent+=String.fromCodePoint(128075);bi=setInterval(blink,530);setTimeout(function(){clearInterval(bi);el.style.borderColor="transparent"},2500)}},600)})();
+</script>
+</body>
+</html>
